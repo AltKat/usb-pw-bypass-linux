@@ -252,9 +252,13 @@ sudo systemctl daemon-reload
 ## ⚠️ SECURITY WARNINGS
 
 🔴 **CRITICAL WARNING:** If you lose your USB = passwordless access!
+
 🔒 **Script permissions must be 700** 
+
 💻 **Daemon checks every 2 seconds**
+
 🏠 **Use only in secure environments**
+
 🔐 **Never share your USB ID**
 
 ---
@@ -295,8 +299,11 @@ sudo journalctl -u usb-unlock.service -f
 ## 📚 How It Works
 
 **PAM Integration:** Uses PAM (Pluggable Authentication Modules) to intercept authentication requests
+
 **USB Detection:** Monitors `/dev/disk/by-id/` for your specific USB device
+
 **Session Management:** Uses `loginctl` to manage user sessions and screen locks
+
 **Systemd Service:** Runs as a background daemon for continuous monitoring
 
 ---
