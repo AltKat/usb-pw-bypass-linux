@@ -252,9 +252,13 @@ sudo systemctl daemon-reload
 ## ⚠️ GÜVENLİK UYARILARI
 
 🔴 **KRİTİK UYARI:** USB'nizi kaybederseniz = parolasız erişim!
+
 🔒 **Script izinleri mutlaka 700 olmalı** 
+
 💻 **Daemon her 2 saniyede kontrol eder**
+
 🏠 **Sadece güvenli ortamlarda kullanın**
+
 🔐 **USB ID'nizi asla paylaşmayın**
 
 ---
@@ -296,8 +300,11 @@ sudo journalctl -u usb-unlock.service -f
 ## 📚 Nasıl Çalışır
 
 **PAM Entegrasyonu:** Kimlik doğrulama isteklerini yakalamak için PAM (Pluggable Authentication Modules) kullanır
+
 **USB Algılama:** Spesifik USB cihazınız için `/dev/disk/by-id/` dizinini izler
+
 **Oturum Yönetimi:** Kullanıcı oturumlarını ve ekran kilitlerini yönetmek için `loginctl` kullanır
+
 **Systemd Servisi:** Sürekli izleme için arka planda daemon olarak çalışır
 
 ---
