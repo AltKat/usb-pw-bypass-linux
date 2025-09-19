@@ -4,7 +4,9 @@ A simple hack to skip sudo/login passwords when your USB key is plugged in. Got 
 
 **Documentation available in [English](guide-en.md) and [Turkish](guide-tr.md).** 
 
-⚠️ **Use at your own risk** - this is a personal convenience tool, not enterprise security! Physical access to your USB = access to your system.
+⚠️ **Use at your own risk** - this is a personal convenience tool, not enterprise security! 
+
+Physical access to your USB = access to your system.
 
 ---
 
