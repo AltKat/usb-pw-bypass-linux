@@ -39,8 +39,6 @@ altkat
 /usr/local/bin/check-usb-key.sh         # for sudo and login
 /etc/pam.d/sudo                         # sudo PAM configuration  
 /etc/pam.d/sddm                         # login PAM configuration
-/usr/local/bin/unlock-if-usb.sh         # screen lock daemon
-/etc/systemd/system/usb-unlock.service  # systemd service
 ```
 
 ---
@@ -109,89 +107,6 @@ account    include      system-auth
 password   include      system-auth
 session    include      system-auth
 ```
-
-### 3️⃣ Screen Lock Daemon
-
-**Create script:**
-```bash
-sudo nano /usr/local/bin/unlock-if-usb.sh
-```
-
-**Content (ATTENTION: Replace USB_ID and USER!):**
-```bash
-#!/bin/bash
-# MUST CHANGE: Write your USB ID here!
-USB_ID="usb-USB_ID"  # Example: usb-SanDisk_Cruzer_Blade_4C530001071218115134
-
-# MUST CHANGE: Write your username here!  
-USER="username"      # Example: john, mary, etc...
-
-while true; do
-    # Check if USB is plugged in
-    if [ -e "/dev/disk/by-id/$USB_ID" ]; then
-        # Find user's active session
-        SESSION=$(loginctl list-sessions | grep $USER | awk '{print $1}')
-        if [ -n "$SESSION" ]; then
-            # Unlock the session
-            loginctl unlock-session $SESSION
-        fi
-    fi
-    sleep 2  # Wait 2 seconds
-done
-```
-
-**REAL EXAMPLE (yours will be different):**
-```bash
-#!/bin/bash
-USB_ID="usb-SanDisk_Cruzer_Blade_4C530001071218115134"  # Real USB ID
-USER="john"                                              # Real username
-
-while true; do
-    if [ -e "/dev/disk/by-id/$USB_ID" ]; then
-        SESSION=$(loginctl list-sessions | grep $USER | awk '{print $1}')
-        if [ -n "$SESSION" ]; then
-            loginctl unlock-session $SESSION
-        fi
-    fi
-    sleep 2
-done
-```
-
-**Set permissions:**
-```bash
-sudo chmod 700 /usr/local/bin/unlock-if-usb.sh
-sudo chown root:root /usr/local/bin/unlock-if-usb.sh
-```
-
-### 4️⃣ Systemd Service
-
-**Create service file:**
-```bash
-sudo nano /etc/systemd/system/usb-unlock.service
-```
-
-**Content:**
-```ini
-[Unit]
-Description=USB Unlock Daemon
-After=graphical.target
-
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/unlock-if-usb.sh
-Restart=always
-User=root
-
-[Install]
-WantedBy=default.target
-```
-
-**Start the service:**
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now usb-unlock.service
-```
-
 ---
 
 ## 🧪 TESTING
@@ -211,14 +126,6 @@ sudo whoami
 2. Try to login with USB plugged in
 3. Should login without asking for password
 
-### ✅ Screen Lock Test
-```bash
-# Lock the screen
-Ctrl+Alt+L
-
-# Lock should automatically unlock when USB is plugged (within 2-3 seconds)
-```
-
 ---
 
 ## 🗑️ ROLLBACK (Uninstall)
@@ -226,7 +133,6 @@ Ctrl+Alt+L
 ### Remove Script Files
 ```bash
 sudo rm -f /usr/local/bin/check-usb-key.sh
-sudo rm -f /usr/local/bin/unlock-if-usb.sh
 ```
 
 ### Clean PAM Configuration
@@ -239,14 +145,6 @@ sudo nano /etc/pam.d/sddm      # Remove the line
 ```bash
 auth sufficient pam_exec.so seteuid quiet /usr/local/bin/check-usb-key.sh
 ```
-
-### Remove Systemd Service
-```bash
-sudo systemctl disable --now usb-unlock.service
-sudo rm -f /etc/systemd/system/usb-unlock.service
-sudo systemctl daemon-reload
-```
-
 ---
 
 ## ⚠️ SECURITY WARNINGS
@@ -254,8 +152,6 @@ sudo systemctl daemon-reload
 🔴 **CRITICAL WARNING:** If you lose your USB = passwordless access!
 
 🔒 **Script permissions must be 700** 
-
-💻 **Daemon checks every 2 seconds**
 
 🏠 **Use only in secure environments**
 
@@ -285,15 +181,6 @@ ls -l /dev/disk/by-id/ | grep usb
 cat /usr/local/bin/check-usb-key.sh
 ```
 
-### Daemon Not Working
-```bash
-# Check service status
-sudo systemctl status usb-unlock.service
-
-# View logs  
-sudo journalctl -u usb-unlock.service -f
-```
-
 ---
 
 ## 📚 How It Works
@@ -304,10 +191,8 @@ sudo journalctl -u usb-unlock.service -f
 
 **Session Management:** Uses `loginctl` to manage user sessions and screen locks
 
-**Systemd Service:** Runs as a background daemon for continuous monitoring
-
 ---
 
-Now sudo, login, and screen lock are tied to your USB key! 🎉
+Now sudo, and login are tied to your USB key! 🎉
 
 **Final check:** Make sure you've replaced all `usb-USB_ID` and `username` placeholders with your actual values!
