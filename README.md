@@ -16,11 +16,10 @@ Physical access to your USB = access to your system.
 
 *Developed with assistance from Claude AI. MIT License.*
 
----
 
 ---
 
-# 🔐 Linux İçin USB Anahtarlı Kimlik Doğrulama (GDM/SDDM Oturum Yöneticileri
+# 🔐 Linux İçin USB Anahtarlı Kimlik Doğrulama (GDM/SDDM Oturum Yöneticileri)
 
 USB anahtarınız takılı olduğunda sudo/oturum açma parolalarını atlamak için basit bir hile. Kendi iş istasyonumda sürekli parola yazmaktan yorulduğum için bu USB tabanlı kimlik doğrulama sistemini KDE/GNOME için yaptım. USB'niz bağlı olduğunda = parola gerekmez. Bağlı olmadığında = normal güvenliğe geri döner. USB durumunu izlemek ve ekran kilitlerini otomatik açmak için PAM entegrasyonu kullanır.
 
