@@ -37,8 +37,9 @@ altkat
 
 ```
 /usr/local/bin/check-usb-key.sh         # for sudo and login
-/etc/pam.d/sudo                         # sudo PAM configuration  
-/etc/pam.d/sddm                         # login PAM configuration
+/etc/pam.d/sudo                         # sudo PAM configuration
+/etc/pam.d/gdm-password                 # GNOME (GDM) login PAM configuration
+/etc/pam.d/sddm                         # KDE (SDDM) login PAM configuration (Skip this file if you use GNOME)
 ```
 
 ---
@@ -85,13 +86,17 @@ sudo chown root:root /usr/local/bin/check-usb-key.sh
 ```bash
 sudo nano /etc/pam.d/sudo
 ```
+**For GNOME (GDM) login:**
+```bash
+sudo nano /etc/pam.d/gdm-password
+```
 
-**For SDDM login:**
+**For KDE (SDDM) login (SKIP if you use GNOME):**
 ```bash
 sudo nano /etc/pam.d/sddm
 ```
 
-**Add this line AT THE TOP of both files:**
+**Add this line AT THE TOP of the required file(s):**
 ```bash
 # USB key check - this line must be at the top!
 auth sufficient pam_exec.so seteuid quiet /usr/local/bin/check-usb-key.sh
@@ -138,7 +143,8 @@ sudo rm -f /usr/local/bin/check-usb-key.sh
 ### Clean PAM Configuration
 ```bash
 sudo nano /etc/pam.d/sudo      # Remove the line
-sudo nano /etc/pam.d/sddm      # Remove the line
+sudo nano /etc/pam.d/gdm-password # Remove the line
+sudo nano /etc/pam.d/sddm      # Remove the line (If you added it)
 ```
 
 **Line to remove:**

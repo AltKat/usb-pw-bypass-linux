@@ -37,8 +37,9 @@ altkat
 
 ```
 /usr/local/bin/check-usb-key.sh         # sudo ve login için
-/etc/pam.d/sudo                         # sudo PAM konfigürasyonu  
-/etc/pam.d/sddm                         # login PAM konfigürasyonu
+/etc/pam.d/sudo                         # sudo PAM konfigürasyonu 
+/etc/pam.d/gdm-password                 # GNOME (GDM) login PAM konfigürasyonu
+/etc/pam.d/sddm                         # KDE (SDDM) login PAM konfigürasyonu (Eğer GNOME kullanıyorsanız bu dosyayı es geçin)
 ```
 
 ---
@@ -85,13 +86,16 @@ sudo chown root:root /usr/local/bin/check-usb-key.sh
 ```bash
 sudo nano /etc/pam.d/sudo
 ```
-
-**SDDM login için:**
+**GNOME (GDM) login için:**
+```bash
+sudo nano /etc/pam.d/gdm-password
+```
+**KDE (SDDM) login için (GNOME kullanıyorsanız ES GEÇİN):**
 ```bash
 sudo nano /etc/pam.d/sddm
 ```
 
-**Her iki dosyanın da EN ÜSTÜNE bu satırı ekleyin:**
+**İhtiyacınız olan dosyanın/dosyaların EN ÜSTÜNE bu satırı ekleyin:**
 ```bash
 # USB anahtar kontrolü - bu satır en üstte olmalı!
 auth sufficient pam_exec.so seteuid quiet /usr/local/bin/check-usb-key.sh
@@ -137,8 +141,9 @@ sudo rm -f /usr/local/bin/check-usb-key.sh
 
 ### PAM Konfigürasyonunu Temizleyin
 ```bash
-sudo nano /etc/pam.d/sudo      # Satırı silin
-sudo nano /etc/pam.d/sddm      # Satırı silin
+sudo nano /etc/pam.d/sudo          # Satırı silin
+sudo nano /etc/pam.d/gdm-password  # Satırı silin
+sudo nano /etc/pam.d/sddm          # Satırı silin (Eğer eklediyseniz)
 ```
 
 **Silinecek satır:**
